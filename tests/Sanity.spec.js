@@ -1,23 +1,39 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/Loginpage.js';
+import { InventoryPage } from '../pages/Inventorypage.js';
+import { CartPage } from '../pages/Cartpage.js';
 
-test('Sanity Test', async ({ page }) => {
+test.describe('Sanity Test', () => {
 
-    const WEBSITE_URL = "https://www.saucedemo.com/";
-    const userInput1 = 'standard_user'
-    const password = 'secret_sauce'
+  test("Validate Complete Purchase Flow", async ({ page }) => {
 
-    // 1. Go to the Swag Labs website
-    await page.goto('https://www.saucedemo.com/');
-    // 2. Insert the username and password
-    await page.getByRole("textbox", { name: "username" }).fill('user_standard');
-    await page.getByRole("textbox", { name: "password" }).fill('secret_sauce ');        
-    // 3. Click the login button
-    await page.getByRole('button', { name: 'Login', exact: true }).click();     
-    // 4. ADD 2 products to the cart
-    await page.getByTestId('add-to-cart-sauce-labs-backpack').click();
-    await page.getByTestId('add-to-cart-sauce-labs-bolt-t-shirt').click();
-    // 5. validate that the cart badge shows the correct number of items
-    await expect(page.locator('.shopping_cart_badge')).toHaveText('2');
-   
-});
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
+
+  
+    await loginPage.openLoginPage();
+    await expect(page).toHaveTitle('Swag Labs');
+    await loginPage.login('standard_user', 'secret_sauce');
+    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+
+  
+    await inventoryPage.goToCart(); 
+    await expect(page).toHaveURL('https://www.saucedemo.com/cart.html');
+    await cartPage.verifyCartPageOpened();
     
+   
+    await cartPage.proceedToCheckout();
+    await expect(page).toHaveURL('https://www.saucedemo.com/checkout-step-one.html');
+
+   
+    await cartPage.fillCheckoutInformation('Tamir', 'Nusuyev', '3849270');
+    await expect(page).toHaveURL('https://www.saucedemo.com/checkout-step-two.html');
+
+   
+    await cartPage.finishOrder();
+    await expect(page).toHaveURL('https://www.saucedemo.com/checkout-complete.html');
+    await cartPage.verifyOrderSuccess();
+  });
+
+});

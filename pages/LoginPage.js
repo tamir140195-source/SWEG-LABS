@@ -1,17 +1,28 @@
+import { expect } from '@playwright/test';
+
 export class LoginPage {
+  constructor(page) {
+    this.page = page;
+    
+    
+    this.usernameField = page.getByRole('textbox', { name: 'Username' });
+    this.passwordField = page.getByRole('textbox', { name: 'Password' });
+    this.loginButton = page.getByRole('button', { name: 'Login' });
+    this.errorMessage = page.locator('[data-test="error"]');
+  }
 
-    constructor(page) {
-        this.page = page
+  async openLoginPage() {
+    await this.page.goto('https://www.saucedemo.com/');
+  }
 
-        this.userNameInput = page.locator('#user-name')
-        this.passwordInput = page.locator('#password')
-        this.loginButton = page.locator('#login-button')
-        this.errorMessage = page.locator('[data-test="error"]')
-    }
+  async login(username, password) {
+    await this.usernameField.fill(username);
+    await this.passwordField.fill(password);
+   
+    await this.loginButton.click({ noWaitAfter: true });
+  }
 
-    async loginData(userName, password) {
-        await this.userNameInput.fill(userName)
-        await this.passwordInput.fill(password)
-        await this.loginButton.click()
-    }
+  async verifyErrorMessageIsVisible() {
+    await expect(this.errorMessage).toBeVisible();
+  }
 }
