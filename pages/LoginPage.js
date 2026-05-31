@@ -12,17 +12,17 @@ export class LoginPage {
   }
 
   async openLoginPage() {
-    await this.page.goto('https://www.saucedemo.com/');
+    await this.page.goto('BASE.URL');
   }
 
   async login(username, password) {
     await this.usernameField.fill(username);
     await this.passwordField.fill(password);
-   
-    await this.loginButton.click({ noWaitAfter: true });
+    await this.loginButton.click();
+    
   }
 
-  async verifyErrorMessageIsVisible() {
-    await expect(this.errorMessage).toBeVisible();
+  async verifyErrorMessageIsVisible(errorText) {
+    await expect(this.errorMessage).toHaveText(errorMessage)
   }
 }

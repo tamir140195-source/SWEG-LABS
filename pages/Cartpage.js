@@ -1,26 +1,25 @@
-import { expect } from '@playwright/test';
+import { expect } from "@playwright/test";
 
 export class CartPage {
   constructor(page) {
     this.page = page;
-    
-  
-    this.cartTitle = page.locator('.title');
-    this.checkoutButton = page.getByRole('button', { name: 'Checkout' });
-    
-   
-    this.firstNameField = page.getByRole('textbox', { name: 'First Name' });
-    this.lastNameField = page.getByRole('textbox', { name: 'Last Name' });
-    this.postalCodeField = page.getByRole('textbox', { name: 'Zip/Postal Code' });
-    
-    this.continueButton = page.getByRole('button', { name: 'Continue' });
-    this.finishButton = page.getByRole('button', { name: 'Finish' });
-    this.successHeader = page.locator('.complete-header');
+
+    this.cartTitle = page.locator(".title");
+    this.checkoutButton = page.getByRole("button", { name: "Checkout" });
+
+    this.firstNameField = page.getByRole("textbox", { name: "First Name" });
+    this.lastNameField = page.getByRole("textbox", { name: "Last Name" });
+    this.postalCodeField = page.getByRole("textbox", {
+      name: "Zip/Postal Code",
+    });
+
+    this.continueButton = page.getByRole("button", { name: "Continue" });
+    this.finishButton = page.getByRole("button", { name: "Finish" });
+    this.successHeader = page.locator(".complete-header");
   }
 
-
   async verifyCartPageOpened() {
-    await expect(this.cartTitle).toHaveText('Your Cart');
+    await expect(this.cartTitle).toHaveText("Your Cart");
   }
 
   async proceedToCheckout() {
@@ -31,7 +30,6 @@ export class CartPage {
     await this.firstNameField.fill(firstName);
     await this.lastNameField.fill(lastName);
     await this.postalCodeField.fill(postalCode);
-    await this.continueButton.click();
   }
 
   async finishOrder() {
