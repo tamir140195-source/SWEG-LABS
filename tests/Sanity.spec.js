@@ -14,7 +14,7 @@ test.describe('Sanity Test', () => {
     const inventoryPage = new InventoryPage(page);
     const cartPage = new CartPage(page);
    
-  
+   
     await loginPage.openLoginPage();
     await expect(page).toHaveTitle('Swag Labs');
     await loginPage.login('USERS.standard.username, USERS.standard.PASSWORD');
