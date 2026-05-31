@@ -9,9 +9,7 @@ export class CartPage {
 
     this.firstNameField = page.getByRole("textbox", { name: "First Name" });
     this.lastNameField = page.getByRole("textbox", { name: "Last Name" });
-    this.postalCodeField = page.getByRole("textbox", {
-      name: "Zip/Postal Code",
-    });
+    this.postalCodeField = page.getByRole("textbox", {name: "Zip/Postal Code",});
 
     this.continueButton = page.getByRole("button", { name: "Continue" });
     this.finishButton = page.getByRole("button", { name: "Finish" });
